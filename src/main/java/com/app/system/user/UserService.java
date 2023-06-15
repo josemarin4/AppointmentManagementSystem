@@ -41,7 +41,6 @@ public class UserService {
 		User currUser = userRepo.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("User not found"));
 		
-		currUser.setId(id);
 		currUser.setEmail(user.getEmail());
 		currUser.setPassword(user.getPassword());
 		currUser.setUsername(user.getUsername());
