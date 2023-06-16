@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.app.appointment.Appointment;
+import com.app.exception.EmailAlreadyExistsException;
+import com.app.exception.UserAlreadyExistsException;
+import com.app.exception.UserNotFoundException;
 
 @Service
 public class UserService {
@@ -21,11 +24,11 @@ public class UserService {
 		String email = user.getEmail();
 		
 		if(userRepo.findByEmail(email) != null) {
-			throw new IllegalArgumentException("Email already in use.");
+			throw new EmailAlreadyExistsException("Email already in use.");
 		}
 		
 		if(userRepo.findByUsername(username) != null) {
-			throw new IllegalArgumentException("Username already taken.");
+			throw new UserAlreadyExistsException("Username already taken.");
 		}
 		
 		userRepo.save(user);
@@ -35,7 +38,7 @@ public class UserService {
 	public User getUser(long id) {
 		
 		User user = userRepo.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("User not found."));
+				.orElseThrow(() -> new UserNotFoundException("User not found."));
 		
 		return user;
 	}
@@ -43,7 +46,7 @@ public class UserService {
 	public User updateUser(User user, long id) {
 		
 		User currUser = userRepo.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("User not found"));
+				.orElseThrow(() -> new UserNotFoundException("User not found"));
 		
 		currUser.setEmail(user.getEmail());
 		currUser.setPassword(user.getPassword());
@@ -58,7 +61,7 @@ public class UserService {
 	public boolean deleteUser(long id) {
 		
 		if(!userRepo.existsById(id)) {
-			throw new IllegalArgumentException("User not found");
+			throw new UserNotFoundException("User not found");
 		}
 		
 		userRepo.deleteById(id);
@@ -68,7 +71,7 @@ public class UserService {
 	public List<Appointment> getUserAppointments(long id){
 		
 		User user = userRepo.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("User not found."));
+				.orElseThrow(() -> new UserNotFoundException("User not found."));
 		
 		return user.getAppointments();
 	}
