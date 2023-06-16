@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.app.appointment.Appointment;
+import com.app.exception.AppointmentNotFoundException;
 import com.app.exception.EmailAlreadyExistsException;
 import com.app.exception.UserAlreadyExistsException;
 import com.app.exception.UserNotFoundException;
