@@ -2,6 +2,10 @@ package com.app.system.user;
 
 
 import java.util.Arrays;
+import java.util.List;
+
+import com.app.appointment.Appointment;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +28,7 @@ public class User {
 	private String username;
 	private String email;
 	private char[] password;
+	private List<Appointment> appointments;
 	
 	
 	
