@@ -83,13 +83,14 @@ public class UserService {
 		User user = userRepo.findById(userId)
 				.orElseThrow(() -> new UserNotFoundException("User not found."));
 
-		Optional<Appointment> appt = user.getAppointments().stream().filter(curr -> curr.getId() == appointmentId).findFirst();
+		Appointment appt = user.getAppointments()
+				.stream()
+				.filter(curr -> curr.getId() == appointmentId)
+				.findFirst()
+				.orElseThrow(() -> new AppointmentNotFoundException("Appointment not found."));
+		
 
-		if(!appt.isPresent()) {
-			throw new AppointmentNotFoundException("Appointment not found.");
-		}
-
-		return appt.get();
+		return appt;
 	}
 
 }
