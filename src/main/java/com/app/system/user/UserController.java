@@ -20,54 +20,44 @@ import com.app.appointment.Appointment;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	
+
 	private final UserService userService;
-	
+
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	@GetMapping("/get/{id}")
 	public ResponseEntity<User> getUser(@PathVariable long id) {
-		
+
 		User user = userService.getUser(id);
-		
-		if(user != null) {
-			return ResponseEntity.ok(user);
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
-		
+		return ResponseEntity.ok(user);
+
 	}
-	
-	
+
+
 	@PostMapping("/add")
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
 		User addedUser = userService.addUser(user);
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(addedUser);
-		
-		
+
+
 	}
-	
+
 	@PutMapping("/update/{id}")
 	public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable long id) {
-		
+
 		User updatedUser = userService.updateUser(user, id);
-		
-		if(updatedUser != null) {
-			return ResponseEntity.ok(updatedUser);
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
+
+		return ResponseEntity.ok(updatedUser);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-		
+
 		boolean userDeleted = userService.deleteUser(id);
+
 		if(userDeleted) {
 			return ResponseEntity.noContent().build();
 		}
@@ -75,31 +65,24 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@GetMapping("/get/{id}/appointments")
 	public ResponseEntity<List<Appointment>> getUserAppointments(@PathVariable long id){
-		
+
 		List<Appointment> appts = userService.getUserAppointments(id);
-		
-		if(appts != null) {
-			return ResponseEntity.ok(appts);
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
+
+		return ResponseEntity.ok(appts);
+
 	}
-	
-	@GetMapping("/get/{id}/appointment/{id}")
+
+	@GetMapping("/get/{userId}/appointment/{appointmentId}")
 	public ResponseEntity<Appointment> getUserAppointment(@PathVariable long userId, @PathVariable long appointmentId){
-		
+
 		Appointment appt = userService.getUserAppointment(userId, appointmentId);
-		
-		if(appt != null) {
-			return ResponseEntity.ok(appt);
-		}
-		else {
-			return ResponseEntity.notFound().build();
-		}
+
+		return ResponseEntity.ok(appt);
+
+
 	}
 
 }
