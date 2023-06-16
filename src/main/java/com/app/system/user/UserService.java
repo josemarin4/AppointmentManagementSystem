@@ -1,6 +1,10 @@
 package com.app.system.user;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.app.appointment.Appointment;
 
 @Service
 public class UserService {
@@ -59,6 +63,14 @@ public class UserService {
 		
 		userRepo.deleteById(id);
 		return true;
+	}
+	
+	public List<Appointment> getUserAppointments(long id){
+		
+		User user = userRepo.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("User not found."));
+		
+		return user.getAppointments();
 	}
 
 }

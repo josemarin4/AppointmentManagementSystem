@@ -1,5 +1,7 @@
 package com.app.system.user;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.app.appointment.Appointment;
 
 @RestController
 @RequestMapping("/users")
@@ -66,6 +70,19 @@ public class UserController {
 		boolean userDeleted = userService.deleteUser(id);
 		if(userDeleted) {
 			return ResponseEntity.noContent().build();
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@GetMapping("/get/{id}/appointments")
+	public ResponseEntity<List<Appointment>> getUserAppointments(@PathVariable long id){
+		
+		List<Appointment> appts = userService.getUserAppointments(id);
+		
+		if(appts != null) {
+			return ResponseEntity.ok(appts);
 		}
 		else {
 			return ResponseEntity.notFound().build();
