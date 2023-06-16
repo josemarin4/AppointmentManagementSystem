@@ -88,5 +88,18 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@GetMapping("/get/{id}/appointment/{id}")
+	public ResponseEntity<Appointment> getUserAppointment(@PathVariable long userId, @PathVariable long appointmentId){
+		
+		Appointment appt = userService.getUserAppointment(userId, appointmentId);
+		
+		if(appt != null) {
+			return ResponseEntity.ok(appt);
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 }
