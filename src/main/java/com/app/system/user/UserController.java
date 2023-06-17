@@ -86,12 +86,20 @@ public class UserController {
 	}
 	
 	@PostMapping("/add/{userId}")
-	public ResponseEntity<Appointment> addAppointment(@Valid @RequestBody Appointment appt, @PathVariable long userId){
+	public ResponseEntity<Appointment> addUserAppointment(@Valid @RequestBody Appointment appt, @PathVariable long userId){
 		
-		Appointment addedAppt = userService.addAppointment(appt, userId);
+		Appointment addedAppt = userService.addUserAppointment(appt, userId);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(addedAppt);
 		
+	}
+	
+	@PutMapping("update/{userId}/{appointmentId}")
+	public ResponseEntity<Appointment> updateUserAppointment(@PathVariable long userId, @PathVariable long appointmentId, @RequestBody Appointment appointment){
+		
+		Appointment updatedAppointment = userService.updateUserAppointment(userId, appointmentId, appointment);
+		
+		return ResponseEntity.ok(updatedAppointment);
 	}
 
 }

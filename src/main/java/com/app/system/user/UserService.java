@@ -92,7 +92,7 @@ public class UserService {
 		return appt;
 	}
 	
-	public Appointment addAppointment(Appointment appt, long userId) {
+	public Appointment addUserAppointment(Appointment appt, long userId) {
 		
 		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
 		
@@ -100,6 +100,25 @@ public class UserService {
 		userRepo.save(user);
 		
 		return appt;
+	}
+	
+	public Appointment updateUserAppointment(long userId, long appointmentId, Appointment appointment) {
+		
+		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
+		
+		Appointment currAppt = user.getAppointments()
+				.stream()
+				.filter(curr -> curr.getId() == appointment.getId())
+				.findFirst()
+				.orElseThrow(() -> new AppointmentNotFoundException("Appointment not found."));
+		
+		currAppt.setName(appointment.getName());
+		currAppt.setDate(appointment.getDate());
+		currAppt.setPlace(appointment.getPlace());
+		currAppt.setTime(appointment.getTime());
+		
+		userRepo.save(user);
+		return currAppt;
 	}
 
 }
