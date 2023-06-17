@@ -75,7 +75,7 @@ public class UserController {
 
 	}
 
-	@GetMapping("/get/{userId}/appointment/{appointmentId}")
+	@GetMapping("/get/{userId}/appointments/{appointmentId}")
 	public ResponseEntity<Appointment> getUserAppointment(@PathVariable long userId, @PathVariable long appointmentId){
 
 		Appointment appt = userService.getUserAppointment(userId, appointmentId);
@@ -85,7 +85,7 @@ public class UserController {
 
 	}
 	
-	@PostMapping("/add/{userId}")
+	@PostMapping("/add/{userId}/appointments")
 	public ResponseEntity<Appointment> addUserAppointment(@Valid @RequestBody Appointment appt, @PathVariable long userId){
 		
 		Appointment addedAppt = userService.addUserAppointment(appt, userId);
@@ -94,7 +94,7 @@ public class UserController {
 		
 	}
 	
-	@PutMapping("update/{userId}/{appointmentId}")
+	@PutMapping("update/{userId}/appointments/{appointmentId}")
 	public ResponseEntity<Appointment> updateUserAppointment(@PathVariable long userId, @PathVariable long appointmentId, @RequestBody Appointment appointment){
 		
 		Appointment updatedAppointment = userService.updateUserAppointment(userId, appointmentId, appointment);
@@ -102,7 +102,7 @@ public class UserController {
 		return ResponseEntity.ok(updatedAppointment);
 	}
 	
-	@DeleteMapping("/delete/{userId}/{appointmentId}")
+	@DeleteMapping("/delete/{userId}/appointments/{appointmentId}")
 	public ResponseEntity<Void> deleteUserAppointment(@PathVariable long userId, @PathVariable long appointmentId){
 		
 		boolean appointmentDeleted = userService.deleteUserAppointment(userId, appointmentId);
