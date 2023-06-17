@@ -84,5 +84,14 @@ public class UserController {
 
 
 	}
+	
+	@PostMapping("/add/{userId}")
+	public ResponseEntity<Appointment> addAppointment(@Valid @RequestBody Appointment appt, @PathVariable long userId){
+		
+		Appointment addedAppt = userService.addAppointment(appt, userId);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(addedAppt);
+		
+	}
 
 }

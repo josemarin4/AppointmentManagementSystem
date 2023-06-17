@@ -91,5 +91,15 @@ public class UserService {
 
 		return appt;
 	}
+	
+	public Appointment addAppointment(Appointment appt, long userId) {
+		
+		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
+		
+		user.getAppointments().add(appt);
+		userRepo.save(user);
+		
+		return appt;
+	}
 
 }
