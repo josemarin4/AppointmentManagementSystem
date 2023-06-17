@@ -1,11 +1,11 @@
 package com.app.system.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.app.appointment.Appointment;
 import com.app.exception.AppointmentNotFoundException;
 import com.app.exception.EmailAlreadyExistsException;
 import com.app.exception.UserAlreadyExistsException;
@@ -15,9 +15,12 @@ import com.app.exception.UserNotFoundException;
 public class UserService {
 
 	private final UserRepository userRepo;
+	
+	private final AppointmentRepository apptRepo;
 
-	public UserService(UserRepository userRepo) {
+	public UserService(UserRepository userRepo, AppointmentRepository apptRepo) {
 		this.userRepo = userRepo;
+		this.apptRepo = apptRepo;
 	}
 
 	public User addUser(User user) {
@@ -32,7 +35,8 @@ public class UserService {
 		if(userRepo.findByUsername(username) != null) {
 			throw new UserAlreadyExistsException("Username already taken.");
 		}
-
+	
+		user.setAppointments(new ArrayList<Appointment>());
 		userRepo.save(user);
 		return user;
 	}
@@ -53,7 +57,7 @@ public class UserService {
 		currUser.setEmail(user.getEmail());
 		currUser.setPassword(user.getPassword());
 		currUser.setUsername(user.getUsername());
-
+		currUser.setAppointments(user.getAppointments());
 		userRepo.save(currUser);
 
 		user.clearPassword();
@@ -93,14 +97,18 @@ public class UserService {
 		return appt;
 	}
 	
-	public Appointment addUserAppointment(Appointment appt, long userId) {
+	
+	public User addUserAppointment(Appointment appt, long userId) {
 		
 		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
 		
-		user.getAppointments().add(appt);
-		userRepo.save(user);
+		apptRepo.save(appt);
+		List<Appointment> userAppointments = user.getAppointments();
+	    userAppointments.add(appt);
+
+	    userRepo.save(user);
 		
-		return appt;
+		return user;
 	}
 	
 	public Appointment updateUserAppointment(long userId, long appointmentId, Appointment appointment) {

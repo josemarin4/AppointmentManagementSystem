@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.appointment.Appointment;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -86,11 +84,11 @@ public class UserController {
 	}
 	
 	@PostMapping("/add/{userId}/appointments")
-	public ResponseEntity<Appointment> addUserAppointment(@Valid @RequestBody Appointment appt, @PathVariable long userId){
+	public ResponseEntity<User> addUserAppointment(@Valid @RequestBody Appointment appt, @PathVariable long userId){
 		
-		Appointment addedAppt = userService.addUserAppointment(appt, userId);
+		User user = userService.addUserAppointment(appt, userId);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(addedAppt);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 		
 	}
 	
