@@ -101,5 +101,18 @@ public class UserController {
 		
 		return ResponseEntity.ok(updatedAppointment);
 	}
+	
+	@DeleteMapping("/delete/{userId}/{appointmentId}")
+	public ResponseEntity<Void> deleteUserAppointment(@PathVariable long userId, @PathVariable long appointmentId){
+		
+		boolean appointmentDeleted = userService.deleteUserAppointment(userId, appointmentId);
+			
+		if(appointmentDeleted) {
+			return ResponseEntity.noContent().build();
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 }

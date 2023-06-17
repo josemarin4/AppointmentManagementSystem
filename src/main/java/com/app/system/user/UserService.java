@@ -1,6 +1,7 @@
 package com.app.system.user;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -119,6 +120,21 @@ public class UserService {
 		
 		userRepo.save(user);
 		return currAppt;
+	}
+	
+	public boolean deleteUserAppointment(long userId, long appointmentId) {
+		
+		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found."));
+		
+		List<Appointment> updatedList = user.getAppointments()
+				.stream().
+				filter(curr -> curr.getId() != appointmentId)
+				.collect(Collectors.toList());
+		
+		user.setAppointments(updatedList);
+		userRepo.save(user);
+		return true;
+		
 	}
 
 }
